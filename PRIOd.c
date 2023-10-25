@@ -29,11 +29,12 @@ void ingressar(lista_tarefas* tarefas, lista_tarefas* ingressadas, cpu* cpu) {
 }
 
 void priod(lista_tarefas* ingressadas, cpu* cpu) {
+    int removida = -1;
 
     for(int i = 0; i < ingressadas->tam; i++) {
         tarefa* tarefa = ingressadas->tarefas[i];
 
-        if(i == cpu->prio) {
+        if(i == cpu->prio && i != removida) {
             executar(tarefa);
             printf("Tarefa executada no clock %d\n", cpu->clock);
             printf("Tarefa %s -> Prioridade: %d, Tempo de espera: %d, Tempo restante: %d\n", tarefa->id, tarefa->priod, tarefa->tempo_espera, tarefa->restante);
@@ -43,6 +44,8 @@ void priod(lista_tarefas* ingressadas, cpu* cpu) {
                 //printf("Tarefa %s -> Prioridade: %d, Tempo de espera: %d, Tempo restante: %d\n", tarefa->id, tarefa->priod, tarefa->tempo_espera, tarefa->restante);
                 cpu->concluido++;
                 remover_tarefa(tarefa, ingressadas, cpu);
+                removida = i;
+                i--;
             }
 
         } else {
