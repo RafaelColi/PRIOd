@@ -34,7 +34,7 @@ void remover_tarefa(tarefa* removida, lista_tarefas* lista_tarefas, cpu* cpu) {
             }
         }
     }
-
+    
     def_prio(cpu, 0);
 
     for(int i = 0; i < lista_tarefas->tam; i++) {
@@ -44,13 +44,11 @@ void remover_tarefa(tarefa* removida, lista_tarefas* lista_tarefas, cpu* cpu) {
             def_prio(cpu, i);
         }
     }
-
 }
 
 int lista_tarefas_esta_cheia(lista_tarefas* lista_tarefas) {
     if(lista_tarefas != NULL) {
         if(lista_tarefas->cap == lista_tarefas->tam) {
-            printf("LISTA CHEIA!\n");
             return 1;
         }
     }
@@ -62,7 +60,6 @@ int lista_tarefas_esta_vazia(lista_tarefas* lista_tarefas) {
     if(lista_tarefas != NULL) {
         if(lista_tarefas->tam == 0) {
             return 1;
-            printf("LISTA VAZIA!");
         }
     }
 

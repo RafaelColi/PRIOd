@@ -71,16 +71,6 @@ void priod(lista_tarefas* ingressadas, cpu* cpu) {
 
 /*Inicializa o algoritmo  PRIOd.*/
 void start(lista_tarefas* tarefas, lista_tarefas* ingressadas, cpu* cpu) {
-    /*ingressar(tarefas, ingressadas, cpu);
-    escolher_tarefa(ingressadas, cpu);
-
-    while(cpu->concluido < tarefas->tam) {
-        priod(ingressadas, cpu);
-        prox_clock(cpu);
-        escolher_tarefa(ingressadas, cpu);
-        ingressar(tarefas, ingressadas, cpu);
-    }
-    */
 
     while(cpu->concluido < tarefas->tam) {
         ingressar(tarefas, ingressadas, cpu);
@@ -101,7 +91,7 @@ int main() {
     lista_tarefas* tarefas = criar_lista_tarefas(n_tarefas);
     lista_tarefas* ingressadas = criar_lista_tarefas(n_tarefas);
 
-    tarefa* t1 = criar_tarefa("t1" ,0, 4, 1);
+    tarefa* t1 = criar_tarefa("t1" , 0, 4, 1);
     tarefa* t2 = criar_tarefa("t2", 0, 1, 4);
     tarefa* t3 = criar_tarefa("t3", 1, 5, 2);
     tarefa* t4 = criar_tarefa("t4", 3, 2, 3);
