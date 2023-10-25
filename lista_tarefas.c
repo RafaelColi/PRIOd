@@ -26,8 +26,8 @@ void remover_tarefa(tarefa* removida, lista_tarefas* lista_tarefas, cpu* cpu) {
     if(!lista_tarefas_esta_vazia(lista_tarefas)) {
         for(int i = 0; i < lista_tarefas->tam; i++) {
             if(lista_tarefas->tarefas[i] == removida) {
-                for(int j = i + 1; j < lista_tarefas->tam; j++) {
-                    lista_tarefas->tarefas[i] = lista_tarefas->tarefas[j];
+                for(int j = i; j < lista_tarefas->tam; j++) {
+                    lista_tarefas->tarefas[j] = lista_tarefas->tarefas[j + 1];
                 }
 
                 lista_tarefas->tam--;
