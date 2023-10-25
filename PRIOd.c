@@ -4,6 +4,9 @@
 #include "lista_tarefas.h"
 #include "cpu.h"
 
+
+/*Define a prioridade da CPU para a próxima tarefa a ser executada.
+Percorre a lista INGRESSADAS e escolhe a tarefa com maior prioridade.*/
 void escolher_tarefa(lista_tarefas* ingressadas, cpu* cpu) {
     for(int i = 0; i < ingressadas->tam; i++) {
         tarefa* tarefa = ingressadas->tarefas[i];
@@ -16,6 +19,10 @@ void escolher_tarefa(lista_tarefas* ingressadas, cpu* cpu) {
     return;
 }
 
+
+/*Percorre a lista TAREFAS.
+Compara o momento de ingresso da tarefa e o clock atual da CPU.
+Se o momento de ingresso e clock forem correspondentes, adiciona a tarefa na lista INGRESSADAS.*/
 void ingressar(lista_tarefas* tarefas, lista_tarefas* ingressadas, cpu* cpu) {
     for(int i = 0; i < tarefas->tam; i++) {
         tarefa* pronta = tarefas->tarefas[i];
@@ -28,6 +35,10 @@ void ingressar(lista_tarefas* tarefas, lista_tarefas* ingressadas, cpu* cpu) {
     return;
 }
 
+
+/*Percorre a lista INGRESSADAS e executa a tarefa com a prioridade definida na CPU.
+As demais tarefas aumentam em 1 sua prioridade dinâmica e ficam em espera.
+Ao ser concluída, a tarefa sai da lista INGRESSADAS e aumenta o número de tarefas concluídas pela CPU.*/
 void priod(lista_tarefas* ingressadas, cpu* cpu) {
     int removida = -1;
 
@@ -58,6 +69,7 @@ void priod(lista_tarefas* ingressadas, cpu* cpu) {
     return;
 }
 
+/*Inicializa o algoritmo  PRIOd.*/
 void start(lista_tarefas* tarefas, lista_tarefas* ingressadas, cpu* cpu) {
     /*ingressar(tarefas, ingressadas, cpu);
     escolher_tarefa(ingressadas, cpu);
