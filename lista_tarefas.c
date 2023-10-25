@@ -16,23 +16,32 @@ lista_tarefas* criar_lista_tarefas(int n) {
 void add_tarefa(tarefa* tarefa, lista_tarefas* lista_tarefas) {
     if(!lista_tarefas_esta_cheia(lista_tarefas)) {
         lista_tarefas->tarefas[lista_tarefas->tam] = tarefa;
-
         lista_tarefas->tam++;
     }
 
     return;
 }
 
-void remover_tarefa(tarefa* tarefa, lista_tarefas* lista_tarefas) {
+void remover_tarefa(tarefa* removida, lista_tarefas* lista_tarefas, cpu* cpu) {
     if(!lista_tarefas_esta_vazia(lista_tarefas)) {
         for(int i = 0; i < lista_tarefas->tam; i++) {
-            if(lista_tarefas->tarefas[i] == tarefa) {
+            if(lista_tarefas->tarefas[i] == removida) {
                 for(int j = i + 1; j < lista_tarefas->tam; j++) {
                     lista_tarefas->tarefas[i] = lista_tarefas->tarefas[j];
                 }
 
                 lista_tarefas->tam--;
             }
+        }
+    }
+
+    def_prio(cpu, 0);
+
+    for(int i = 0; i < lista_tarefas->tam; i++) {
+        tarefa* tarefa = lista_tarefas->tarefas[i];
+
+        if(tarefa->priod > lista_tarefas->tarefas[cpu->prio]->priod) {
+            def_prio(cpu, i);
         }
     }
 

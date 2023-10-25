@@ -2,6 +2,7 @@
 #define TAREFAS_H
 
 typedef struct tarefa {
+    char* id;
     int ingresso;
     int duracao;
     int prioridade;
@@ -10,7 +11,7 @@ typedef struct tarefa {
     int tempo_espera;
 } tarefa;
 
-tarefa* criar_tarefa(int ingresso, int duracao, int prioridade);
+tarefa* criar_tarefa(char* id, int ingresso, int duracao, int prioridade);
 
 void elevar_prioridade(tarefa* tarefa);
 

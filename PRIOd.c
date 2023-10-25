@@ -2,16 +2,18 @@
 #include <stdio.h>
 #include "tarefa.h"
 #include "lista_tarefas.h"
+#include "cpu.h"
 
-typedef struct cpu {
-    int clock;
-    int concluido;
-} cpu;
+void escolher_tarefa(lista_tarefas* ingressadas, cpu* cpu) {
+    for(int i = 0; i < ingressadas->tam; i++) {
+        tarefa* tarefa = ingressadas->tarefas[i];
 
-cpu* criar_cpu() {
-    cpu* nova = (cpu*) calloc(1, sizeof(cpu));
+        if(tarefa->priod > ingressadas->tarefas[cpu->prio]->priod) {
+            def_prio(cpu, i);
+        }
+    }
 
-    return nova;
+    return;
 }
 
 void ingressar(lista_tarefas* tarefas, lista_tarefas* ingressadas, cpu* cpu) {
@@ -26,34 +28,54 @@ void ingressar(lista_tarefas* tarefas, lista_tarefas* ingressadas, cpu* cpu) {
     return;
 }
 
-void priod(lista_tarefas* ingressadas, cpu* cpu, lista_tarefas* tarefas) {
-    ingressar(tarefas, ingressadas, cpu);
-    
-    int prio_max = 0;
+void priod(lista_tarefas* ingressadas, cpu* cpu) {
 
     for(int i = 0; i < ingressadas->tam; i++) {
         tarefa* tarefa = ingressadas->tarefas[i];
 
-        if(tarefa->priod > ingressadas->tarefas[prio_max]->priod) {
-            prio_max = i;
-        }
-    }
-
-    for(int i = 0; i < ingressadas->tam; i++) {
-        tarefa* tarefa = ingressadas->tarefas[i];
-
-        if(i == prio_max) {
+        if(i == cpu->prio) {
             executar(tarefa);
+            printf("Tarefa executada no clock %d\n", cpu->clock);
+            printf("Tarefa %s -> Prioridade: %d, Tempo de espera: %d, Tempo restante: %d\n", tarefa->id, tarefa->priod, tarefa->tempo_espera, tarefa->restante);
 
             if(tarefa->restante == 0) {
+                //printf("Tarefa concluida no clock %d\n", cpu->clock);
+                //printf("Tarefa %s -> Prioridade: %d, Tempo de espera: %d, Tempo restante: %d\n", tarefa->id, tarefa->priod, tarefa->tempo_espera, tarefa->restante);
                 cpu->concluido++;
-                remover_tarefa(tarefa, ingressadas);
+                remover_tarefa(tarefa, ingressadas, cpu);
             }
 
         } else {
             elevar_prioridade(tarefa);
+            //printf("Tarefa em espera no clock %d\n", cpu->clock);
+            //printf("Tarefa %s -> Prioridade: %d, Tempo de espera: %d, Tempo restante: %d\n", tarefa->id, tarefa->priod, tarefa->tempo_espera, tarefa->restante);
         }
     }
+
+    return;
+}
+
+void start(lista_tarefas* tarefas, lista_tarefas* ingressadas, cpu* cpu) {
+    /*ingressar(tarefas, ingressadas, cpu);
+    escolher_tarefa(ingressadas, cpu);
+
+    while(cpu->concluido < tarefas->tam) {
+        priod(ingressadas, cpu);
+        prox_clock(cpu);
+        escolher_tarefa(ingressadas, cpu);
+        ingressar(tarefas, ingressadas, cpu);
+    }
+    */
+
+    while(cpu->concluido < tarefas->tam) {
+        ingressar(tarefas, ingressadas, cpu);
+        escolher_tarefa(ingressadas, cpu);
+        priod(ingressadas, cpu);
+        prox_clock(cpu);
+    }
+
+
+    return;
 }
 
 int main() {
@@ -64,11 +86,11 @@ int main() {
     lista_tarefas* tarefas = criar_lista_tarefas(n_tarefas);
     lista_tarefas* ingressadas = criar_lista_tarefas(n_tarefas);
 
-    tarefa* t1 = criar_tarefa(0, 4, 1);
-    tarefa* t2 = criar_tarefa(0, 1, 4);
-    tarefa* t3 = criar_tarefa(1, 5, 2);
-    tarefa* t4 = criar_tarefa(3, 2, 3);
-    tarefa* t5 = criar_tarefa(5, 3, 5);
+    tarefa* t1 = criar_tarefa("t1" ,0, 4, 1);
+    tarefa* t2 = criar_tarefa("t2", 0, 1, 4);
+    tarefa* t3 = criar_tarefa("t3", 1, 5, 2);
+    tarefa* t4 = criar_tarefa("t4", 3, 2, 3);
+    tarefa* t5 = criar_tarefa("t5", 5, 3, 5);
 
 
     add_tarefa(t1, tarefas);
@@ -77,10 +99,7 @@ int main() {
     add_tarefa(t4, tarefas);
     add_tarefa(t5, tarefas);
 
-    while(cpu->concluido < tarefas->tam) {
-        priod(ingressadas, cpu, tarefas);
-        cpu->clock++;
-    }
+    start(tarefas, ingressadas, cpu);
     
     double tempo_total_duracao = 0;
     double tempo_total_espera = 0;
@@ -88,6 +107,7 @@ int main() {
     for(int i = 0; i < tarefas->tam; i++) {
         tarefa* tarefa = tarefas->tarefas[i];
 
+        printf("Tarefa %s -> Tempo de espera: %d, Tempo duracao: %d\n", tarefa->id, tarefa->tempo_espera, tarefa->duracao);
         tempo_total_duracao += tarefa->duracao + tarefa->tempo_espera;
         tempo_total_espera += tarefa->tempo_espera;
     }

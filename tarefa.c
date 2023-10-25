@@ -2,10 +2,12 @@
 #include <stdio.h>
 #include "tarefa.h"
 
-tarefa* criar_tarefa(int ingresso, int duracao, int prioridade) {
+tarefa* criar_tarefa(char* id, int ingresso, int duracao, int prioridade) {
     tarefa* nova = (tarefa*) calloc(1, sizeof(tarefa));
 
     if(nova != NULL) {
+        nova->id = id;
+        
         nova->prioridade = prioridade;
         nova->priod = prioridade;
 
