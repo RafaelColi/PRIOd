@@ -50,19 +50,19 @@ void priod(lista_tarefas* ingressadas, cpu* cpu) {
             printf("Tarefa executada no clock %d\n", cpu->clock);
             printf("Tarefa %s -> Prioridade: %d, Tempo de espera: %d, Tempo restante: %d\n", tarefa->id, tarefa->priod, tarefa->tempo_espera, tarefa->restante);
 
-            if(tarefa->restante == 0) {
-                //printf("Tarefa concluida no clock %d\n", cpu->clock);
-                //printf("Tarefa %s -> Prioridade: %d, Tempo de espera: %d, Tempo restante: %d\n", tarefa->id, tarefa->priod, tarefa->tempo_espera, tarefa->restante);
-                cpu->concluido++;
-                remover_tarefa(tarefa, ingressadas, cpu);
-                removida = i;
-                i--;
-            }
-
         } else {
             elevar_prioridade(tarefa);
             //printf("Tarefa em espera no clock %d\n", cpu->clock);
             //printf("Tarefa %s -> Prioridade: %d, Tempo de espera: %d, Tempo restante: %d\n", tarefa->id, tarefa->priod, tarefa->tempo_espera, tarefa->restante);
+        }
+    }
+
+    for(int i = 0; i < ingressadas->tam; i++) {
+        tarefa* tarefa = ingressadas->tarefas[i];
+
+        if(tarefa->restante == 0) {
+            cpu->concluido++;
+            remover_tarefa(tarefa, ingressadas, cpu);
         }
     }
 

@@ -37,13 +37,7 @@ void remover_tarefa(tarefa* removida, lista_tarefas* lista_tarefas, cpu* cpu) {
     
     def_prio(cpu, 0);
 
-    for(int i = 0; i < lista_tarefas->tam; i++) {
-        tarefa* tarefa = lista_tarefas->tarefas[i];
-
-        if(tarefa->priod > lista_tarefas->tarefas[cpu->prio]->priod) {
-            def_prio(cpu, i);
-        }
-    }
+    return;
 }
 
 int lista_tarefas_esta_cheia(lista_tarefas* lista_tarefas) {
