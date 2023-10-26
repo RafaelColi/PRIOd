@@ -96,7 +96,6 @@ int main() {
     tarefa* t4 = criar_tarefa("t4", 3, 2, 3);
     tarefa* t5 = criar_tarefa("t5", 5, 3, 5);
 
-
     add_tarefa(t1, tarefas);
     add_tarefa(t2, tarefas);
     add_tarefa(t3, tarefas);

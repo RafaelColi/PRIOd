@@ -6,7 +6,7 @@ lista_tarefas* criar_lista_tarefas(int n) {
     lista_tarefas* nova = (lista_tarefas*) calloc(n, sizeof(lista_tarefas*));
 
     if(nova != NULL) {
-        nova->tarefas = (tarefa**) calloc(n, sizeof(tarefa));
+        nova->tarefas = (tarefa**) calloc(n, sizeof(tarefa*));
         nova->cap = n;
     }
 
