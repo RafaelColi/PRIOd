@@ -40,12 +40,11 @@ void ingressar(lista_tarefas* tarefas, lista_tarefas* ingressadas, cpu* cpu) {
 As demais tarefas aumentam em 1 sua prioridade dinâmica e ficam em espera.
 Ao ser concluída, a tarefa sai da lista INGRESSADAS e aumenta o número de tarefas concluídas pela CPU.*/
 void priod(lista_tarefas* ingressadas, cpu* cpu) {
-    int removida = -1;
 
     for(int i = 0; i < ingressadas->tam; i++) {
         tarefa* tarefa = ingressadas->tarefas[i];
 
-        if(i == cpu->prio && i != removida) {
+        if(i == cpu->prio) {
             executar(tarefa);
             printf("Tarefa executada no clock %d\n", cpu->clock);
             printf("Tarefa %s -> Prioridade: %d, Tempo de espera: %d, Tempo restante: %d\n", tarefa->id, tarefa->priod, tarefa->tempo_espera, tarefa->restante);
@@ -66,6 +65,8 @@ void priod(lista_tarefas* ingressadas, cpu* cpu) {
         }
     }
 
+    prox_clock(cpu);
+
     return;
 }
 
@@ -76,9 +77,7 @@ void start(lista_tarefas* tarefas, lista_tarefas* ingressadas, cpu* cpu) {
         ingressar(tarefas, ingressadas, cpu);
         escolher_tarefa(ingressadas, cpu);
         priod(ingressadas, cpu);
-        prox_clock(cpu);
     }
-
 
     return;
 }
